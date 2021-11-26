@@ -52,11 +52,24 @@ class Section:
 
     # Defines the vertices and faces 
     def generate(self):
-        self.vertices = [ 
-                # Définir ici les sommets
-                ]
+        self.vertices =[
+                [0, 0, 0 ], 
+                [0, 0, self.parameters['height']], 
+                [self.parameters['width'], 0, self.parameters['height']],
+                [self.parameters['width'], 0, 0],
+                [0, self.parameters['thickness'], 0 ], 
+                [0, self.parameters['thickness'], self.parameters['height']], 
+                [self.parameters['width'], self.parameters['thickness'], self.parameters['height']],
+                [self.parameters['width'], self.parameters['thickness'], 0]
+                ]              
+                
         self.faces = [
-                # définir ici les faces
+                [0, 3, 2, 1],
+                [4,7,6,5],
+                [0,4,5,1],
+                [3,7,6,2],
+                [0,4,7,3],
+                [1,5,6,2]
                 ]   
 
     # Checks if the opening can be created for the object x
@@ -77,5 +90,14 @@ class Section:
     # Draws the faces
     def draw(self):
         # A compléter en remplaçant pass par votre code
-        pass
+        gl.glPushMatrix()
+
+        gl.glPolygonMode(gl.GL_FRONT_AND_BACK, gl.GL_FILL) # on trace les faces : GL_FILL
+        for i in self.faces:
+            gl.glBegin(gl.GL_QUADS) # Tracé d’un quadrilatère
+            gl.glColor3fv([0.5, 0.5, 0.5]) # Couleur gris moyen
+            for j in i:
+                gl.glVertex3fv(self.vertices[j])
+            gl.glEnd()
+        gl.glPopMatrix()
   
