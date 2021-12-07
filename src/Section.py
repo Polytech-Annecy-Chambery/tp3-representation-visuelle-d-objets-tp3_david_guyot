@@ -76,17 +76,22 @@ class Section:
     # Checks if the opening can be created for the object x
     def canCreateOpening(self, x):
         # A compléter en remplaçant pass par votre code
-        return (self.parameters['height']>=x.getParameter('height')+x.getParameter('position')[2] and self.parameters['width']>=x.getParameter('width')+x.getParameter('position')[0])    
+        print('oui')
+        return (self.parameters['height']>=x.getParameter('height')+x.getParameter('position')[2]-self.parameters['position'][2]
+                and x.getParameter('position')[2]>=self.parameters['position'][2]
+                and self.parameters['width']>=x.getParameter('width')+x.getParameter('position')[0]-self.parameters['position'][0]
+                and x.getParameter('position')[0]>=self.parameters['position'][0]
+                )    
         
     # Creates the new sections for the object x
     def createNewSections(self, x):
         # A compléter en remplaçant pass par votre code
         if self.canCreateOpening(x):
             sections=[Section(copy.copy(self.parameters))
-                    .setParameter('width', x.getParameter('position')[0]),
+                    .setParameter('width', x.getParameter('position')[0]-self.getParameter('position')[0]),
                     
                     Section(copy.copy(self.parameters))
-                    .setParameter('height', self.getParameter('height')-x.getParameter('height')-x.getParameter('position')[2])
+                    .setParameter('height', self.getParameter('height')-x.getParameter('height')-x.getParameter('position')[2]+self.getParameter('position')[2])
                     .setParameter('width', x.getParameter('width'))
                     .setParameter('position', 
                                   [x.getParameter('position')[0],
@@ -96,7 +101,7 @@ class Section:
                                   ),
                     
                     Section(copy.copy(self.parameters))
-                    .setParameter('height',x.getParameter('position')[2])
+                    .setParameter('height',x.getParameter('position')[2]-self.getParameter('position')[2])
                     .setParameter('width', x.getParameter('width'))
                     .setParameter('position', 
                                   [x.getParameter('position')[0],
@@ -106,7 +111,7 @@ class Section:
                                   ),
                     
                     Section(copy.copy(self.parameters))
-                    .setParameter('width', self.getParameter('width')-x.getParameter('width')-x.getParameter('position')[0])
+                    .setParameter('width', self.getParameter('width')-x.getParameter('width')-x.getParameter('position')[0]+self.getParameter('position')[0])
                     .setParameter('position', 
                                   [x.getParameter('position')[0]+x.getParameter('width'),
                                    self.getParameter('position')[1],
